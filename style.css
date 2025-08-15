@@ -1,0 +1,13 @@
+html,
+body {
+  height: 100%;
+  margin: 0; /* Remove default body margin */
+  padding: 0; /* Remove default body padding */
+}
+
+body {
+  background-image: url('./home.gif');
+  background-position: center center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent image repetition */
+  background-size: cover; /* Scale the image to cover the entire element */
+}
