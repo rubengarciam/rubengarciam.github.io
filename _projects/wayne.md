@@ -4,7 +4,7 @@ title: "Wayne - Comic Manager & Reader"
 description: "A better way to manage your comic books library"
 ---
 
-![wayne hero image](/assets/img/projects/wayne.hero.png)
+![wayne hero image](/assets/img/projects/wayne.png)
 
 Wayne is a free, great looking DRM-free comic book reader and library manager for iPhone and iPad.
 
@@ -18,7 +18,7 @@ Wayne supports iCloud Drive and Dropbox. Other cloud storage solutions are on it
 
 Retrieve any comic's metadata from Goodreads or manually edit it yourself. Add your comics to collections, series and story arcs to keep things organized the way you want.
 
-![wayne library image](/assets/img/projects/wayne.library.png)
+![wayne library image](/assets/img/projects/wayne.metadata.png)
 
 ## Grids, lists and more
 
