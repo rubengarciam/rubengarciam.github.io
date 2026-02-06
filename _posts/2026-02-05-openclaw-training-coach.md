@@ -632,14 +632,7 @@ You now have a 24/7 AI training companion that:
 - Proactively checks in during heartbeats
 - Maintains security and privacy
 
-**Next Steps:**
-1. Complete the basic setup (OpenClaw + Telegram)
-2. Add your primary data source (TrainingPeaks or Strava)
-3. Configure heartbeat for daily check-ins
-4. Customize SOUL.md to match your personality
-5. Iterate and improve!
-
-**Remember:** This is a living system. Update it, improve it, and make it yours. The best training assistant is one that adapts to your needs.
+**Remember:** This is a living system. Update it, improve it, and make it yours. The best training assistant is one that adapts to your needs!
 
 ---
 
