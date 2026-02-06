@@ -26,6 +26,7 @@ body {
 
 .home-bg {
   position: fixed;
+  z-index: 0;
   top: 0;
   left: 0;
   width: 100%;
@@ -39,7 +40,7 @@ body {
 /* ---- Site Header ---- */
 .site-header {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -54,19 +55,17 @@ body {
 }
 
 .home .site-header .site-title {
-  color: rgba(255,255,255,0.8);
-}
-
-.home .site-header .site-title:hover {
   color: #fff;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
 }
 
 .home .site-header nav a {
-  color: rgba(255,255,255,0.6);
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.5);
 }
 
 .home .site-header nav a:hover {
-  color: #fff;
+  opacity: 0.7;
 }
 
 .site-header .site-title {
