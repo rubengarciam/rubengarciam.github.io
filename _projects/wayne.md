@@ -2,6 +2,7 @@
 layout: project
 title: "Wayne - Comic Manager & Reader"
 description: "A better way to manage your comic books library"
+archived: true
 ---
 
 ![wayne hero image](/assets/img/projects/wayne.png)
