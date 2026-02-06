@@ -7,7 +7,7 @@ archived: true
 
 ![wayne hero image](/assets/img/projects/wayne.png)
 
-Wayne is a free, great looking DRM-free comic book reader and library manager for iPhone and iPad.
+Wayne is a free, great looking DRM-free comic book reader and library manager for iPhone and iPad. Roadmap: [rubengarciam/wayne](https://github.com/rubengarciam/wayne)
 
 ## Your complete library in one place
 
