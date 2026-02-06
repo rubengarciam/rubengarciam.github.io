@@ -2,6 +2,7 @@
 layout: project
 title: "OpenClaw Training Coach"
 description: "A 24/7 AI training companion running on a Raspberry Pi"
+published: false
 ---
 
 An AI training coach bot built on the [OpenClaw](https://docs.openclaw.ai) framework. It runs on a Raspberry Pi, connects to TrainingPeaks, Strava, and Garmin Connect, and communicates via Telegram.

@@ -4,102 +4,55 @@ title: "Building Your Own AI Training Coach Bot with OpenClaw"
 date: 2026-02-05
 ---
 
-This guide documents how to set up an AI, with access to TrainingPeaks, Strava and Garmin Connect.
+This guide documents how to configure [OpenClaw](https://openclaw.ai/) as a personal training coach that provides training insights, recovery analysis, and nutrition guidance, using:
 
-The bot runs 24/7 on a Raspberry Pi and can communicate via Telegram, providing training insights, recovery analysis, and nutrition guidance.
+- [Garmin Connect](https://connect.garmin.com/) - recovery data (sleep, HR, HRV, body battery, etc)
+- [TrainingPeaks](https://trainingpeaks.com) - workout plans, activity data, records, scores, fitness/form/fatigue, etc
+- [Strava](https://strava.com) - activity data
+
+These platforms are interchangeable with others that provide the same data, as long as there is an available [skill](https://docs.openclaw.ai/tools/skills#skills) for it. 
+
+The activities retrieved from TrainingPeaks do not contain lap metadata, hence why they are combined with Strava's for more accurate information.
+
+After finishing the setup, the AI bot will:
+
+- Retrieve your workout plans
+- Analyze recovery data (sleep, HRV, body battery)
+- Send proactive morning summaries with training and recovery status
+- Provide pre/during/post workout nutrition recommendations
+- Analyze training workouts and activities in detail, and provide recommendations
+- Flag potential issues (low HRV, poor sleep, overtraining signals)
 
 ---
 
 ## Table of Contents
 
 1. [Prerequisites](#prerequisites)
-2. [Hardware Setup](#hardware-setup)
-3. [OpenClaw Installation](#openclaw-installation)
-4. [Bot Identity & Configuration](#bot-identity--configuration)
-5. [Skills Setup](#skills-setup)
-6. [Security Hardening](#security-hardening)
-7. [Heartbeat Configuration](#heartbeat-configuration)
-8. [Additional Configuration](#additional-configuration)
-9. [Conclusion](#conclusion)
+2. [OpenClaw Installation](#openclaw-installation)
+3. [Bot Identity & Configuration](#bot-identity--configuration)
+4. [Skills Setup](#skills-setup)
+5. [Heartbeat Configuration](#heartbeat-configuration)
+6. [Additional Configuration](#additional-configuration)
+7. [Security Hardening](#security-hardening)
+8. [Changelog](#changelog)
 
 ---
 
 ## Prerequisites
 
-### Required Accounts
+This guide presumes you have basic command line knowledge and an environment ready to install OpenClaw. 
 
-- **TrainingPeaks** - Free or premium account (for workout data)
-- **Strava** - Free account with API access
-- **Garmin Connect** - For health & activity data
-- **Telegram** - For messaging interface
+You don't need a powerful machine, a simple Raspberry Pi 4 is good enough but the agent can be installed in a dedicated computer locally, a Docker container or in a VPS, though secured inside your network is preferred to avoid exposing ssh access to the internet. 
 
-### Required Hardware
-
-- **Raspberry Pi 4** (4GB+ RAM recommended)
-  - Or any Linux server (Ubuntu/Debian)
-- **MicroSD Card** (32GB+ for Raspberry Pi)
-- **Stable Internet Connection**
-
-### Technical Skills
-
-- Basic command line knowledge
-- Ability to SSH into a Linux system
-- Understanding of environment variables
-- Basic Git knowledge (helpful but not required)
-
----
-
-## Hardware Setup
-
-More details [in the official doc](https://www.raspberrypi.com/documentation/computers/getting-started.html#installing-the-operating-system).
-
-### 1. Raspberry Pi OS Installation
-
-1. Download **Raspberry Pi OS Lite** (64-bit recommended)
-2. Flash to SD card using [Raspberry Pi Imager](https://www.raspberrypi.com/software/)
-3. Enable SSH during setup (advanced options in imager)
-4. Boot the Pi and SSH in:
-   ```bash
-   ssh pi@raspberrypi.local
-   # Default password: raspberry (change immediately!)
-   ```
-
-### 2. Initial System Setup
-
-```bash
-# Update system
-sudo apt update && sudo apt upgrade -y
-
-# Install essential packages
-sudo apt install -y git curl wget build-essential python3-pip python3-venv
-
-# Set timezone
-sudo timedatectl set-timezone YOUR_TIMEZONE
-# Example: sudo timedatectl set-timezone Australia/Sydney
-
-# Change default password
-passwd
-```
+Please take security very seriously: **do not install OpenClaw in your own personal computer.** OpenClaw has root access to the computer; isolated hardware is strongly recommended. OpenClaw is in active development but still in very early stages. 
 
 ---
 
 ## OpenClaw Installation
 
-OpenClaw is the framework that powers the bot. [Follow the official getting started doc](https://docs.openclaw.ai/start/getting-started), the following is an extract with the key points.
+[Follow the official getting started doc](https://docs.openclaw.ai/start/getting-started), the following is an extract with the key points.
 
-### 1. Install Node.js
-
-```bash
-# Install Node.js 18+ (required by OpenClaw)
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-sudo apt install -y nodejs
-
-# Verify
-node --version  # Should be 18.x or higher
-npm --version
-```
-
-### 2. Install OpenClaw
+Install OpenClaw:
 
 ```bash
 # Install globally
@@ -114,10 +67,12 @@ Follow the onboarding wizard steps:
 - **Tailscale** (recommended if Gateway not local, off by default)
 - **Model:** select and authenticate with your LLM(s) credentials
 - **Workspace:** default (`~/.openclaw/workspace`)
-- **Channels:** Telegram recommended for ease of setup. [Steps to create your Telgram bot can be found here](https://docs.openclaw.ai/channels/telegram).
+- **Channels:** Telegram recommended for ease of setup. [Steps to create your Telegram bot can be found here](https://docs.openclaw.ai/channels/telegram).
 - **Daemon:** install
 - Proceed with health check
 - Do not install any skills yet
+
+Verify it is installed correctly:
 
 ```bash
 # Verify installation
@@ -138,7 +93,7 @@ Interact with your new bot via Telegram. Give it a name, avatar, etc and share w
 
 Create these files in `~/.openclaw/workspace/`:
 
-**IDENTITY.md**
+#### IDENTITY.md
 ```markdown
 # IDENTITY.md - Who Am I?
 
@@ -149,7 +104,7 @@ Create these files in `~/.openclaw/workspace/`:
 - **Avatar:** [Description]
 ```
 
-**USER.md**
+#### USER.md
 ```markdown
 # USER.md - About Your Human
 
@@ -165,7 +120,7 @@ Create these files in `~/.openclaw/workspace/`:
 - Preferred training zones: [HR/Power/Pace]
 ```
 
-**SOUL.md**
+#### SOUL.md
 
 This file should be created already. This is just a reference and yours to evolve. [Here's the official template](https://docs.openclaw.ai/reference/templates/SOUL#soul)
 
@@ -210,10 +165,12 @@ This file is yours to evolve. As you learn who you are, update it.
 
 Add the following file in `~/.openclaw/workspace/`:
 
-**SECURITY.md**
+#### SECURITY.md
 
 ```markdown
 # SECURITY.md - Security Rules
+
+This information is CRITICAL.
 
 **NEVER share passwords, tokens, API keys, or any sensitive credentials in any communication channel.**
 
@@ -238,8 +195,7 @@ All credentials MUST be stored in:
 - Use `.gitignore` for sensitive files
 ```
 
-Update the **AGENTS.md** file to include the new **SECURITY.MD** guidelines
-
+Update the **AGENTS.md** file to include the new **SECURITY.MD** guidelines:
 
 ```markdown
 # AGENTS.md - Your Workspace
@@ -265,15 +221,15 @@ Capture what matters. Write things down. Files persist; mental notes don't.
 
 ## Skills Setup
 
-[Skills](https://docs.openclaw.ai/tools/skills) add functionality to your bot. **Treat any skill you install as untrusted code**: read them and review before enabling.
+[Skills](https://docs.openclaw.ai/tools/skills) add functionality to your bot. 
 
-You can manually download the files and install them in `~/.openclaw/workspace/skills/` or use [ClawHub](https://clawhub.ai/). This guide will install the skills using ClawHub after configuration
+You can either manually download and install skill files in `~/.openclaw/workspace/skills/` or use [ClawHub](https://clawhub.ai/). This guide will install the skills using ClawHub after configuration.
 
-**If a skill configuration requires any credentials or API Keys**, never introduce them in a conversation prompt; always configure them manually.
+**Treat any skill you install as untrusted code**: read them and review before enabling. **If a skill configuration requires any credentials or API Keys**, never introduce them in a conversation prompt; always configure them manually.
 
 ### 1. TrainingPeaks Skill
 
-**Authentication: Cookie-based**
+Authentication: Cookie-based.
 
 1. **Get Cookie from Browser:**
    ```bash
@@ -298,11 +254,9 @@ You can manually download the files and install them in `~/.openclaw/workspace/s
    - Cookie auto-refreshes tokens
    ```
 
----
-
 ### 2. Strava Skill
 
-**Authentication: OAuth 2.0**
+Authentication: OAuth 2.0.
 
 1. **Create Strava API App:**
    - Go to https://www.strava.com/settings/api
@@ -348,11 +302,9 @@ You can manually download the files and install them in `~/.openclaw/workspace/s
    - Credentials: `~/.strava/credentials.env`
    ```
 
----
-
 ### 3. Garmin Connect Skill
 
-**Authentication: Email + Password**
+Authentication: Email + Password.
 
 1. **Create Python Virtual Environment:**
    ```bash
@@ -378,8 +330,6 @@ You can manually download the files and install them in `~/.openclaw/workspace/s
    - Tokens: `~/.clawdbot/garmin/`
    ```
 
----
-
 ### 4. Install Skills from ClawHub
 
 Use ClawHub to discover and install community skills:
@@ -404,7 +354,7 @@ clawhub install endurance-coach
 
 ---
 
-## Restart OpenClaw Gateway
+### 5. Restart OpenClaw Gateway
 
 ```bash
 openclaw gateway restart
@@ -416,8 +366,88 @@ openclaw gateway status
 openclaw gateway logs
 ```
 
-Connect to your bot on Telegram :)
+Connect to your bot on Telegram. You're ready to go! 🤖
 
+**Remember:** This is a living system. Update it, improve it, and make it yours. The best training assistant is one that adapts to your needs.
+
+## Heartbeat Configuration
+
+The HEARTBEAT of your bot will be configured as you interact with it. Help it understand how it should behave, what information you want and at what times.
+
+For example:
+
+```txt
+Create a daily training check and share at 5am local time:
+1. Fetch today's planned workouts from TrainingPeaks
+2. Check yesterday's Garmin recovery data (sleep, HRV, body battery)
+3. Review previous day's completed workouts
+4. Send morning summary:
+   - What's on the plan today
+   - Recovery status
+   - Nutrition recommendations (pre/during/post workout)
+   - Any red flags (low HRV, poor sleep)
+```
+
+
+You now have a 24/7 AI training companion that:
+- Monitors your training plan
+- Analyzes recovery metrics
+- Provides personalized nutrition advice
+- Responds to natural language queries
+- Proactively checks in during heartbeats
+- Maintains security and privacy
+
+---
+
+## Additional Configuration
+
+### 1. Custom Training Zones
+
+The bot can retrieve your training zones automatically from your configured sources, but these can also be manually updated in TOOLS.md with your specific zones:
+
+```markdown
+### Training Zones
+
+**Running (HR-based):**
+- Zone 1 (Easy): 120-135 bpm
+- Zone 2 (Aerobic): 135-150 bpm
+- Zone 3 (Tempo): 150-165 bpm
+- Zone 4 (Threshold): 165-175 bpm
+- Zone 5 (VO2max): 175+ bpm
+
+**Cycling (Power-based, FTP: 255W):**
+- Zone 1 (Recovery): <153W (60%)
+- Zone 2 (Endurance): 153-204W (60-80%)
+- Zone 3 (Tempo): 204-229W (80-90%)
+- Zone 4 (Threshold): 229-255W (90-100%)
+- Zone 5 (VO2max): 255-306W (100-120%)
+```
+
+### 2. Additional TOOLS.MD info
+
+Similar to the training zones, all this information can be created/updated by the bot automatically as you interact with it.
+
+**TOOLS.md**
+```markdown
+# TOOLS.md - Local Notes
+
+Document your specific setup details here:
+
+### Training Setup
+
+- Watch: [Model]
+- Bike computer: [Model]
+- Running shoes: [Model & mileage]
+- Weight: [kg]
+
+### Race Goals
+
+- Target race: [Name & Date]
+- Distance: [Sprint/Olympic/70.3/140.6]
+- Goal time: [Time]
+
+[Add skill-specific notes as you configure them]
+```
 ---
 
 ## Security Hardening
@@ -508,79 +538,7 @@ sudo apt install unattended-upgrades
 sudo dpkg-reconfigure -plow unattended-upgrades
 ```
 
----
-
-## Heartbeat Configuration
-
-The HEARTBEAT of your bot will be configured as you interact with it. Help him understand how it should behave, what information you want and at what times.
-
-For example:
-
-```txt
-Create a daily training check and share at 5am local time:
-1. Fetch today's planned workouts from TrainingPeaks
-2. Check yesterday's Garmin recovery data (sleep, HRV, body battery)
-3. Review previous day's completed workouts
-4. Send morning summary:
-   - What's on the plan today
-   - Recovery status
-   - Nutrition recommendations (pre/during/post workout)
-   - Any red flags (low HRV, poor sleep)
-```
-
----
-
-## Additional Configuration
-
-### 1. Custom Training Zones
-
-The bot can retrieve your training zones automatically from your configured sources, but these can also be manually updated in TOOLS.md with your specific zones:
-
-```markdown
-### Training Zones
-
-**Running (HR-based):**
-- Zone 1 (Easy): 120-135 bpm
-- Zone 2 (Aerobic): 135-150 bpm
-- Zone 3 (Tempo): 150-165 bpm
-- Zone 4 (Threshold): 165-175 bpm
-- Zone 5 (VO2max): 175+ bpm
-
-**Cycling (Power-based, FTP: 255W):**
-- Zone 1 (Recovery): <153W (60%)
-- Zone 2 (Endurance): 153-204W (60-80%)
-- Zone 3 (Tempo): 204-229W (80-90%)
-- Zone 4 (Threshold): 229-255W (90-100%)
-- Zone 5 (VO2max): 255-306W (100-120%)
-```
-
-### 2. Additional TOOLS.MD info
-
-Similarly to the training zones, all this information can be created/updated by the bot automatically as you interact with it.
-
-**TOOLS.md**
-```markdown
-# TOOLS.md - Local Notes
-
-Document your specific setup details here:
-
-### Training Setup
-
-- Watch: [Model]
-- Bike computer: [Model]
-- Running shoes: [Model & mileage]
-- Weight: [kg]
-
-### Race Goals
-
-- Target race: [Name & Date]
-- Distance: [Sprint/Olympic/70.3/140.6]
-- Goal time: [Time]
-
-[Add skill-specific notes as you configure them]
-```
-
-### 3. Backup Strategy
+### 6. Backup Strategy
 
 ```bash
 # Create backup script
@@ -620,22 +578,14 @@ Commit Initial Setup
 git add IDENTITY.md USER.md SOUL.md SECURITY.md TOOLS.md AGENTS.md MEMORY.md
 git commit -m "Initial bot identity setup"
 ```
----
-
-## Conclusion
-
-You now have a 24/7 AI training companion that:
-- Monitors your training plan
-- Analyzes recovery metrics
-- Provides personalized nutrition advice
-- Responds to natural language queries
-- Proactively checks in during heartbeats
-- Maintains security and privacy
-
-**Remember:** This is a living system. Update it, improve it, and make it yours. The best training assistant is one that adapts to your needs!
 
 ---
 
-**Document Version:** 1.0
-**Last Updated:** February 5, 2026
-**Author:** @rubengarciam
+## Changelog
+
+2026-02-05 v2.0
+- Removed Raspberry Pi installation and hardware configuration
+- Content restructured for simplicity
+
+2026-02-05 v1.0
+- First draft
