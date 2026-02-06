@@ -9,6 +9,11 @@ kramdown:
 
 permalink: /writing/:title/
 
+collections:
+  projects:
+    output: true
+    permalink: /projects/:title/
+
 exclude:
   - README.md
   - LICENSE

@@ -76,6 +76,11 @@ body {
   letter-spacing: 0.06em;
 }
 
+.site-header nav {
+  display: flex;
+  gap: 1.2rem;
+}
+
 .site-header nav a {
   font-size: 0.8rem;
   color: #888;
