@@ -160,9 +160,9 @@ body {
 /* ---- Project Archived Banner ---- */
 .project-archived {
   font-size: 0.85rem;
-  color: #666;
-  background: #f5f5f5;
-  border-left: 3px solid #ccc;
+  color: #e9c7b4;
+  background: #e56e29;
+  border-left: 3px solid #db5405;
   padding: 0.6rem 1rem;
   margin-bottom: 2rem;
 }
