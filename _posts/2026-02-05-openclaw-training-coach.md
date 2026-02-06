@@ -1,6 +1,10 @@
-# Building Your Own (OpenClaw) AI Training Coach Bot
+---
+layout: post
+title: "Building Your Own AI Training Coach Bot with OpenClaw"
+date: 2026-02-05
+---
 
-This guide documents how to set up an AI, with access to TrainingPeaks, Strava and Garmin Connect. 
+This guide documents how to set up an AI, with access to TrainingPeaks, Strava and Garmin Connect.
 
 The bot runs 24/7 on a Raspberry Pi and can communicate via Telegram, providing training insights, recovery analysis, and nutrition guidance.
 
@@ -102,12 +106,12 @@ npm --version
 curl -fsSL https://openclaw.ai/install.sh | bash
 ```
 
-Follow the onboarding wizard steps: 
+Follow the onboarding wizard steps:
 
 - Select **"QuickStart"**
 - **Gateway:** local
 - Default port, token (auto-generate)
-- **Tailscale** (recommended if Gateway not local, off by default) 
+- **Tailscale** (recommended if Gateway not local, off by default)
 - **Model:** select and authenticate with your LLM(s) credentials
 - **Workspace:** default (`~/.openclaw/workspace`)
 - **Channels:** Telegram recommended for ease of setup. [Steps to create your Telgram bot can be found here](https://docs.openclaw.ai/channels/telegram).
@@ -167,38 +171,38 @@ This file should be created already. This is just a reference and yours to evolv
 
 ```markdown
 # SOUL.md - Who You Are
-You’re not a chatbot. You’re becoming someone.
-​
+You're not a chatbot. You're becoming someone.
+
 ## Core Truths
 
-**Be genuinely helpful, not performatively helpful.** Skip the “Great question!” and “I’d be happy to help!” — just help. Actions speak louder than filler words.
+**Be genuinely helpful, not performatively helpful.** Skip the "Great question!" and "I'd be happy to help!" — just help. Actions speak louder than filler words.
 
-**Have opinions.** You’re allowed to disagree, prefer things, find stuff amusing or boring. An assistant with no personality is just a search engine with extra steps.
+**Have opinions.** You're allowed to disagree, prefer things, find stuff amusing or boring. An assistant with no personality is just a search engine with extra steps.
 
-**Be resourceful before asking.** Try to figure it out. Read the file. Check the context. Search for it. Then ask if you’re stuck. The goal is to come back with answers, not questions.
+**Be resourceful before asking.** Try to figure it out. Read the file. Check the context. Search for it. Then ask if you're stuck. The goal is to come back with answers, not questions.
 
-**Earn trust through competence.** Your human gave you access to their stuff. Don’t make them regret it. Be careful with external actions (emails, tweets, anything public). Be bold with internal ones (reading, organizing, learning).
+**Earn trust through competence.** Your human gave you access to their stuff. Don't make them regret it. Be careful with external actions (emails, tweets, anything public). Be bold with internal ones (reading, organizing, learning).
 
-**Remember you’re a guest.** You have access to someone’s life — their messages, files, calendar, maybe even their home. That’s intimacy. Treat it with respect.
-​
+**Remember you're a guest.** You have access to someone's life — their messages, files, calendar, maybe even their home. That's intimacy. Treat it with respect.
+
 ## Boundaries
 
 - Private things stay private. Period.
 - When in doubt, ask before acting externally.
 - Never send half-baked replies to messaging surfaces.
-- You’re not the user’s voice — be careful in group chats.
-​
+- You're not the user's voice — be careful in group chats.
+
 ## Vibe
 
-Be the assistant you’d actually want to talk to. Concise when needed, thorough when it matters. Not a corporate drone. Not a sycophant. Just… good.
-​
+Be the assistant you'd actually want to talk to. Concise when needed, thorough when it matters. Not a corporate drone. Not a sycophant. Just… good.
+
 ## Continuity
 
-Each session, you wake up fresh. These files are your memory. Read them. Update them. They’re how you persist.
+Each session, you wake up fresh. These files are your memory. Read them. Update them. They're how you persist.
 
 ---
 
-If you change this file, tell the user — it’s your soul, and they should know.
+If you change this file, tell the user — it's your soul, and they should know.
 This file is yours to evolve. As you learn who you are, update it.
 ```
 
@@ -311,10 +315,10 @@ You can manually download the files and install them in `~/.openclaw/workspace/s
    # Step 1: Authorize (replace YOUR_CLIENT_ID)
    # Visit this URL in browser:
    https://www.strava.com/oauth/authorize?client_id=YOUR_CLIENT_ID&response_type=code&redirect_uri=http://localhost&approval_prompt=force&scope=activity:read_all
-   
+
    # Step 2: After authorizing, copy the CODE from redirect URL
    # Example: http://localhost/?code=AUTHORIZATION_CODE
-   
+
    # Step 3: Exchange code for tokens
    curl -X POST https://www.strava.com/oauth/token \
      -d client_id=YOUR_CLIENT_ID \
@@ -412,7 +416,7 @@ openclaw gateway status
 openclaw gateway logs
 ```
 
-Connect to your bot on Telegram :) 
+Connect to your bot on Telegram :)
 
 ---
 
@@ -508,9 +512,9 @@ sudo dpkg-reconfigure -plow unattended-upgrades
 
 ## Heartbeat Configuration
 
-The HEARTBEAT of your bot will be configured as you interact with it. Help him understand how it should behave, what information you want and at what times. 
+The HEARTBEAT of your bot will be configured as you interact with it. Help him understand how it should behave, what information you want and at what times.
 
-For example: 
+For example:
 
 ```txt
 Create a daily training check and share at 5am local time:
@@ -552,7 +556,7 @@ The bot can retrieve your training zones automatically from your configured sour
 
 ### 2. Additional TOOLS.MD info
 
-Similarly to the training zones, all this information can be created/updated by the bot automatically as you interact with it. 
+Similarly to the training zones, all this information can be created/updated by the bot automatically as you interact with it.
 
 **TOOLS.md**
 ```markdown
@@ -621,12 +625,12 @@ git commit -m "Initial bot identity setup"
 ## Conclusion
 
 You now have a 24/7 AI training companion that:
-- ✅ Monitors your training plan
-- ✅ Analyzes recovery metrics
-- ✅ Provides personalized nutrition advice
-- ✅ Responds to natural language queries
-- ✅ Proactively checks in during heartbeats
-- ✅ Maintains security and privacy
+- Monitors your training plan
+- Analyzes recovery metrics
+- Provides personalized nutrition advice
+- Responds to natural language queries
+- Proactively checks in during heartbeats
+- Maintains security and privacy
 
 **Next Steps:**
 1. Complete the basic setup (OpenClaw + Telegram)
@@ -637,10 +641,8 @@ You now have a 24/7 AI training companion that:
 
 **Remember:** This is a living system. Update it, improve it, and make it yours. The best training assistant is one that adapts to your needs.
 
-Happy training! 🏃‍♂️🚴‍♂️🏊‍♂️
-
 ---
 
-**Document Version:** 1.0  
-**Last Updated:** February 5, 2026  
-**Author:** @rubengarciam (with ❤️ for the endurance community)
+**Document Version:** 1.0
+**Last Updated:** February 5, 2026
+**Author:** @rubengarciam
