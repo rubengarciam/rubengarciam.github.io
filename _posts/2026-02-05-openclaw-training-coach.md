@@ -4,11 +4,6 @@ title: "Building Your Own AI Training Coach Bot with OpenClaw"
 date: 2026-02-06
 ---
 
-
-``` applescript
-tell application "Safari" to quit
-```
-
 [OpenClaw](https://openclaw.ai/) has been getting a lot of attention, and I wanted to see how it would work as a personal training coach. The key is connecting it to your actual training data so it has enough context to provide meaningful insights on training, recovery, and nutrition. 
 
 These platforms are interchangeable with others that provide the same data, as long as there is an available [skill](https://docs.openclaw.ai/tools/skills#skills) for it. For my personal use case these are:
