@@ -10,6 +10,7 @@ body_class: post-page
       {% if page.description %}<p class="post-description">{{ page.description }}</p>{% endif %}
     </header>
     {% if page.archived %}<div class="project-archived">This project is no longer maintained.</div>{% endif %}
+    {% include toc.html %}
     <div class="post-content">
       {{ content }}
     </div>
