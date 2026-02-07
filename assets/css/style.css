@@ -261,6 +261,118 @@ body {
   margin: 1rem 0;
 }
 
+/* ---- Table of Contents ---- */
+.toc-sidebar {
+  margin-bottom: 1.5rem;
+}
+
+.toc-toggle {
+  display: block;
+  width: 100%;
+  background: none;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 0.6rem 1rem;
+  text-align: left;
+  font-size: 0.8rem;
+  color: #888;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.02em;
+}
+
+.toc-toggle:hover {
+  color: #1a1a1a;
+  border-color: #ddd;
+}
+
+.toc {
+  display: none;
+  padding: 0.8rem 1rem 0;
+}
+
+.toc-sidebar.open .toc {
+  display: block;
+}
+
+.toc ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc li {
+  margin-bottom: 0.35rem;
+}
+
+.toc li.toc-h3 {
+  padding-left: 0.9rem;
+}
+
+.toc a {
+  font-size: 0.75rem;
+  color: #999;
+  text-decoration: none;
+  line-height: 1.5;
+  display: block;
+  transition: color 0.15s;
+}
+
+.toc a:hover {
+  color: #1a1a1a;
+}
+
+.toc a.active {
+  color: #1a1a1a;
+}
+
+/* Desktop TOC sidebar */
+@media (min-width: 1100px) {
+  .post.has-toc {
+    max-width: 980px;
+  }
+
+  .post.has-toc article {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    column-gap: 3rem;
+  }
+
+  .post.has-toc .post-header {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .post.has-toc .project-archived {
+    grid-column: 1;
+  }
+
+  .post.has-toc .post-content {
+    grid-column: 1;
+  }
+
+  .post.has-toc .toc-sidebar {
+    grid-column: 2;
+    grid-row: 1 / -1;
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+    margin-bottom: 0;
+    padding-top: 0.3rem;
+  }
+
+  .toc-toggle {
+    display: none;
+  }
+
+  .toc {
+    display: block;
+    padding: 0;
+    border-left: 1px solid #eee;
+    padding-left: 1rem;
+  }
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 600px) {
   html {
