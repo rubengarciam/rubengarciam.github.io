@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Building Your Own AI Training Coach Bot with OpenClaw"
-date: 2026-02-06
+date: 2026-02-07
 ---
 
 [OpenClaw](https://openclaw.ai/) has been getting a lot of attention, and I wanted to see how it would work as a personal training coach. The key is connecting it to your actual training data so it has enough context to provide meaningful insights on training, recovery, and nutrition. 
@@ -572,12 +572,12 @@ git commit -m "Initial bot identity setup"
 
 ## Changelog
 
-2026-02-06
+2026-02-07
 - Removed table of contents (redundant with new sidebar design)
 
-2026-02-05
+2026-02-06
 - Removed Raspberry Pi installation and hardware configuration
 - Content restructured for simplicity
 
-2026-02-05
+2026-02-06
 - First draft
