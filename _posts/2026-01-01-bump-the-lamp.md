@@ -21,7 +21,4 @@ That's the thing about bumping the lamp. It's not about getting credit. It's not
 
 The lesson of bumping the lamp isn't about obsessing over every pixel or spending months polishing details that don't matter. It's about recognizing when something is worth the extra effort because it matters to you. Because you're the kind of person who cares. Because the work you put into the world is a reflection of who you are.
 
-When I watch Who Framed Roger Rabbit? now, I see it through different eyes. I see the love that went into every frame. I see people who cared enough to make their corner of a big, complicated project as excellent as they could. And I see a reminder that the things we create don't just live in the world—they live in us. Long after the movie ends, what remains is the care we put into it.
-So here's my question for you, and for me: What's your lamp? What's the detail in your work that you could skip, that maybe no one would notice, but that you'd know was missing?
-
 Don't skip it. [Bump the lamp](https://www.youtube.com/watch?v=_EUPwsD64GI). Because you'll know. And in the end, that's what matters most.
