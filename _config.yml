@@ -1,6 +1,7 @@
 title: rubengm
 url: "https://rubengm.com"
 baseurl: ""
+author: Ruben GM
 
 markdown: kramdown
 highlighter: rouge
@@ -14,6 +15,9 @@ collections:
   projects:
     output: true
     permalink: /projects/:title/
+
+plugins:
+ - jekyll-feed
 
 exclude:
   - README.md
