@@ -1,20 +1,20 @@
 ---
 layout: post
 title: "Building Your Own AI Training Coach Bot with OpenClaw"
-date: 2026-02-05
+date: 2026-02-06
 ---
 
-This guide documents how to configure [OpenClaw](https://openclaw.ai/) as a personal training coach that provides training insights, recovery analysis, and nutrition guidance, using:
+[OpenClaw](https://openclaw.ai/) has been getting a lot of attention, and I wanted to see how it would work as a personal training coach. The key is connecting it to your actual training data so it has enough context to provide meaningful insights on training, recovery, and nutrition. 
+
+These platforms are interchangeable with others that provide the same data, as long as there is an available [skill](https://docs.openclaw.ai/tools/skills#skills) for it. For my personal use case these are:
 
 - [Garmin Connect](https://connect.garmin.com/) - recovery data (sleep, HR, HRV, body battery, etc)
 - [TrainingPeaks](https://trainingpeaks.com) - workout plans, activity data, records, scores, fitness/form/fatigue, etc
 - [Strava](https://strava.com) - activity data
 
-These platforms are interchangeable with others that provide the same data, as long as there is an available [skill](https://docs.openclaw.ai/tools/skills#skills) for it. 
+Strava would be redundant but the activities retrieved from TrainingPeaks do not contain lap metadata, hence why they are combined for more accurate information.
 
-The activities retrieved from TrainingPeaks do not contain lap metadata, hence why they are combined with Strava's for more accurate information.
-
-After finishing the setup, the AI bot will:
+This article focuses exclusively on getting the agent configured and ready to go; I might follow up with a post detailing how it behaves and how good (or average) the insights are. After finishing the setup, the AI bot will:
 
 - Retrieve your workout plans
 - Analyze recovery data (sleep, HRV, body battery)
@@ -25,26 +25,15 @@ After finishing the setup, the AI bot will:
 
 ---
 
-## Table of Contents
-
-1. [Prerequisites](#prerequisites)
-2. [OpenClaw Installation](#openclaw-installation)
-3. [Bot Identity & Configuration](#bot-identity--configuration)
-4. [Skills Setup](#skills-setup)
-5. [Heartbeat Configuration](#heartbeat-configuration)
-6. [Additional Configuration](#additional-configuration)
-7. [Security Hardening](#security-hardening)
-8. [Changelog](#changelog)
-
----
-
 ## Prerequisites
 
 This guide presumes you have basic command line knowledge and an environment ready to install OpenClaw. 
 
-You don't need a powerful machine, a simple Raspberry Pi 4 is good enough but the agent can be installed in a dedicated computer locally, a Docker container or in a VPS, though secured inside your network is preferred to avoid exposing ssh access to the internet. 
+A quick heads up on security: Since OpenClaw needs root access, **don't run it on your main machine.** Use separate hardware—even a Raspberry Pi works fine. You'll have more peace of mind knowing your bot isn't sharing access with your daily driver. OpenClaw is still in early stages, so isolated hardware is the way to go. 
 
-Please take security very seriously: **do not install OpenClaw in your own personal computer.** OpenClaw has root access to the computer; isolated hardware is strongly recommended. OpenClaw is in active development but still in very early stages. 
+The agent can be installed in a dedicated computer locally, a Docker container or in a VPS. You don't need a powerful machine, a simple Raspberry Pi 4 is good enough.
+
+
 
 ---
 
@@ -225,9 +214,9 @@ Capture what matters. Write things down. Files persist; mental notes don't.
 
 You can either manually download and install skill files in `~/.openclaw/workspace/skills/` or use [ClawHub](https://clawhub.ai/). This guide will install the skills using ClawHub after configuration.
 
-**Treat any skill you install as untrusted code**: read them and review before enabling. **If a skill configuration requires any credentials or API Keys**, never introduce them in a conversation prompt; always configure them manually.
+Before you enable any skill, take a minute to look through it. You're essentially giving it access to your system, so it's worth knowing what you're installing. **If a skill asks for credentials or API keys**, configure them manually—never paste them in a chat.
 
-### 1. TrainingPeaks Skill
+### 1. Configure TrainingPeaks
 
 Authentication: Cookie-based.
 
@@ -254,7 +243,7 @@ Authentication: Cookie-based.
    - Cookie auto-refreshes tokens
    ```
 
-### 2. Strava Skill
+### 2. Configure Strava
 
 Authentication: OAuth 2.0.
 
@@ -302,7 +291,7 @@ Authentication: OAuth 2.0.
    - Credentials: `~/.strava/credentials.env`
    ```
 
-### 3. Garmin Connect Skill
+### 3. Configure Garmin Connect
 
 Authentication: Email + Password.
 
@@ -366,13 +355,11 @@ openclaw gateway status
 openclaw gateway logs
 ```
 
-Connect to your bot on Telegram. You're ready to go! 🤖
-
-**Remember:** This is a living system. Update it, improve it, and make it yours. The best training assistant is one that adapts to your needs.
+Connect to your bot on Telegram. You're ready to go!
 
 ## Heartbeat Configuration
 
-The HEARTBEAT of your bot will be configured as you interact with it. Help it understand how it should behave, what information you want and at what times.
+As you interact with your bot, you'll configure its **HEARTBEAT**—basically how often and when it checks in with you. Help it understand how it should behave, what information you want, and when you want it.
 
 For example:
 
@@ -389,13 +376,15 @@ Create a daily training check and share at 5am local time:
 ```
 
 
-You now have a 24/7 AI training companion that:
+You've got a 24/7 training companion that understands your data and adapts to how you work:
 - Monitors your training plan
 - Analyzes recovery metrics
 - Provides personalized nutrition advice
 - Responds to natural language queries
 - Proactively checks in during heartbeats
 - Maintains security and privacy
+
+From here, it's yours to customize and improve as you use it.
 
 ---
 
@@ -583,9 +572,12 @@ git commit -m "Initial bot identity setup"
 
 ## Changelog
 
-2026-02-05 v2.0
+2026-02-06
+- Removed table of contents (redundant with new sidebar design)
+
+2026-02-05
 - Removed Raspberry Pi installation and hardware configuration
 - Content restructured for simplicity
 
-2026-02-05 v1.0
+2026-02-05
 - First draft
