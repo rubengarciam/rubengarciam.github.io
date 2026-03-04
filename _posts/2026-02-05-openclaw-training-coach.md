@@ -2,6 +2,7 @@
 layout: post
 title: "Building Your Own AI Training Coach Bot with OpenClaw"
 date: 2026-02-07
+published: false
 ---
 
 [OpenClaw](https://openclaw.ai/) has been getting a lot of attention, and I wanted to see how it would work as a personal training coach. The key is connecting it to your actual training data so it has enough context to provide meaningful insights on training, recovery, and nutrition. 
