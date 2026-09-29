@@ -7,6 +7,8 @@ archived: false
 
 Kai is an AI coaching agent for triathletes, runners, cyclists and swimmers. It's not an app or a server — it's a folder of plain markdown instructions and five skills that you point an agent runtime at and start chatting with.
 
+(![kai hero image](/assets/img/projects/kai.png)
+
 Named after King Kai from Dragon Ball. Casual, analytic, occasionally sarcastic about your recovery metrics.
 
 ## How it works
