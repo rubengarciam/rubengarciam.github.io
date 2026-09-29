@@ -1,0 +1,21 @@
+name: Sync Kai changelog
+on:
+  schedule:
+    - cron: "0 20 * * *"   # 6am AEDT daily
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 .github/scripts/sync_kai_changelog.py
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add _includes/changelogs/kai.md
+          git diff --cached --quiet || git commit -m "chore: sync Kai changelog"
+          git diff --cached --quiet || git push
