@@ -1,7 +1,7 @@
 ---
 layout: project
-title: "Kai - An AI Endurance Coach"
-description: "An endurance AI coach that lives in a folder"
+title: "Kai"
+description: "An AI Endurance Coach"
 archived: false
 ---
 
