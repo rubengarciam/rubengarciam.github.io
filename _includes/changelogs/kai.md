@@ -1,3 +1,10 @@
+### [2.3.2](https://github.com/rubengarciam/kai/releases/tag/v2.3.2) - 2026-09-29
+
+- **Fixed: `garmin_activity_files.py download --format fit` saved a ZIP archive under a `.fit` name** ([#15](https://github.com/rubengarciam/kai/issues/15)). Garmin sends the original file zipped, so `parse`, `query` and `analyze` failed with "Invalid .FIT File Header". The FIT file is now unpacked on download, and `parse`/`query`/`analyze` also accept a ZIP-wrapped FIT, so files an earlier version left on disk work without re-downloading.
+- **Fixed:** `download` failed if `--output-dir` didn't exist. It is now created (mode `700`).
+- **Changed:** downloaded activity files are saved owner-only (`600`) and never written through a symlink at the destination. They hold GPS tracks, and the default folder, `/tmp`, is shared.
+- **Fixed:** `.FIT` (capitals), which devices and Garmin Express write, was rejected as an unsupported file type.
+
 ### [2.3.1](https://github.com/rubengarciam/kai/releases/tag/v2.3.1) - 2026-09-29
 
 - **Fixed: `tyre-mileage.sh` read a tyre's `fitted_date` as midnight UTC** instead of the athlete's own local date, so a ride on the local morning of the fit day (east of UTC) could be missed entirely, and a ride the evening before (west of UTC) could be wrongly counted ([#22](https://github.com/rubengarciam/kai/issues/22)). It now compares each activity's own local date, which Strava already provides, so no timezone configuration is needed.
