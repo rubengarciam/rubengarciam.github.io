@@ -1,3 +1,13 @@
+### [2.5.0](https://github.com/rubengarciam/kai/releases/tag/v2.5.0) - 2026-10-01
+
+- **Added: `garmin_activity_files.py` reads TCX files** ([#36](https://github.com/rubengarciam/kai/issues/36)). `parse`, `query` and `analyze` accept `.tcx` (any case) and return the same record fields as for FIT (timestamp, heart rate, distance, altitude, speed, power, cadence, position) plus a summary per lap, using only the standard library. This makes indoor rides uploaded by third-party apps analysable: their FIT files can't be decoded, but their TCX exports carry the full data. `analyze` gives the same statistics from a TCX as from the FIT of the same activity.
+- **Changed:** when a FIT file can't be decoded, the error now says to download the same activity with `--format tcx` and parse that.
+- A TCX that declares a DTD or XML entities is refused (a TCX file never has them), which closes the usual XML entity-expansion trick.
+
+### [2.4.0](https://github.com/rubengarciam/kai/releases/tag/v2.4.0) - 2026-10-01
+
+- **Changed: Garmin dashboards no longer need the internet** ([#7](https://github.com/rubengarciam/kai/issues/7)). `garmin_chart.py` loaded Chart.js from `cdn.jsdelivr.net`, so a dashboard was blank offline and depended on a third-party server. Chart.js 4.4.0 (the official build from npm, checked against the registry's integrity hash, with its MIT licences) is now bundled in `skills/garmin-health-analysis/assets/` and embedded in each page, which also means a dashboard keeps working after you move or email it. If the bundled file is ever missing, the script warns and falls back to the CDN. Pages are about 200 KB larger.
+
 ### [2.3.2](https://github.com/rubengarciam/kai/releases/tag/v2.3.2) - 2026-09-29
 
 - **Fixed: `garmin_activity_files.py download --format fit` saved a ZIP archive under a `.fit` name** ([#15](https://github.com/rubengarciam/kai/issues/15)). Garmin sends the original file zipped, so `parse`, `query` and `analyze` failed with "Invalid .FIT File Header". The FIT file is now unpacked on download, and `parse`/`query`/`analyze` also accept a ZIP-wrapped FIT, so files an earlier version left on disk work without re-downloading.
